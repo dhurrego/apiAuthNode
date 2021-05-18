@@ -3,14 +3,9 @@ const express = require('express');
 // Crear el servidor/aplicación de express
 const app = express();
 
-// GET
-app.get('/', (req, res) => {
-    res.status(200).json({
-        ok: true,
-        msg: "Todo salio bien",
-        uid: 1234
-    });
-});
+// Rutas
+
+app.use( '/api/auth', require('./routes/auth') );
 
 // Ejecutar la aplicación
 app.listen( 4000, () => {
