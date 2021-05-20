@@ -95,13 +95,24 @@ const loginUsuario = async(req = request, res = response) => {
 };
 
 const renewToken = async(req = request, res = response) => {
-    const { uid, name, email } = req;
-    const token = await generarJWT(uid, name, email);
+    const { uid } = req;
+
+    const dbUser = await Usuario.findById(uid);
+
+    // Confirmar si el uid existe
+    if(!dbUser){
+        return res.status(400).json({
+            ok: false,
+            msg: 'Usuario no existe'
+        });
+    }
+
+    const token = await generarJWT(uid, dbUser.name, dbUser.email);
     return res.json({
         ok: true,
         uid,
-        name,
-        email,
+        name: dbUser.name,
+        email: dbUser.email,
         token
     });
 };
